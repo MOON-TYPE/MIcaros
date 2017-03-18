@@ -11,6 +11,7 @@
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.ProjectWindowCallback;
+using System;
 using System.Reflection;
 using System.Linq;
 #endregion
@@ -33,10 +34,17 @@ namespace MoonPincho
 			var assembly = GetAssembly();
 
 			// Obtener todas las clases derivadas de ScriptableObject
+			if (assembly == null)
+			{
+				return;
+			}
 			var allScriptableObjects = (from t in assembly.GetTypes() where t.IsSubclassOf(typeof(ScriptableObject)) select t).ToArray();
 
-			// TODO Iniciar windows
-
+			// Inicializar sistema MIcaros
+			if (allScriptableObjects != null)
+			{
+				ScriptableObjectGUI.Init(allScriptableObjects);
+			}
 		}
 
 		/// <summary>
@@ -56,6 +64,85 @@ namespace MoonPincho
 		private static Assembly GetAssembly()// Devuelve el ensamblado que contiene el codigo de secuencia de comandos para este proyecto
 		{
 			return Assembly.Load(new AssemblyName("Assembly-CSharp"));
+		}
+		#endregion
+	}
+	#endregion
+
+	#region GUI
+	/// <summary>
+	/// <para>Interfaz de MIcaros.</para>
+	/// </summary>
+	public class ScriptableObjectGUI : EditorWindow
+	{
+		#region Variables Privadas
+		/// <summary>
+		/// <para>Scripts seleccionado para crear el scriptableobjet.</para>
+		/// </summary>
+		private int scriptSeleccionado;											// Scripts seleccionado para crear el scriptableobjet
+		/// <summary>
+		/// <para>Nombres de los scriptableobjects.</para>
+		/// </summary>
+		private static string[] nombres;										// Nombres de los scriptableobjects
+		/// <summary>
+		/// <para>Tipos</para>
+		/// </summary>
+		private static Type[] tipos;											// Tipos
+		/// <summary>
+		/// <para>Propiedad de tipos.</para>
+		/// </summary>
+		private static Type[] Types												// Propiedad de tipos
+		{
+			get { return tipos; }
+			set
+			{
+				tipos = value;
+				nombres = tipos.Select(t => t.FullName).ToArray();
+			}
+		}
+		#endregion
+
+		#region Inicializador
+		/// <summary>
+		/// <para>Inicializa el sistema MIcaros.</para>
+		/// </summary>
+		/// <param name="scriptableObjects">El tipo scriptableobject</param>
+		public static void Init(Type[] scriptableObjects)// Inicializa el sistema MIcaros
+		{
+			Types = scriptableObjects;
+
+			ScriptableObjectGUI window = EditorWindow.GetWindow<ScriptableObjectGUI>(true, "MIcaros", true);
+			window.ShowPopup();
+		}
+		#endregion
+
+		#region UI
+		/// <summary>
+		/// <para>Interfaz de MIcaros.</para>
+		/// </summary>
+		public void OnGUI()// Interfaz de MIcaros
+		{
+			GUILayout.Label("Elegit Clase ->");
+			scriptSeleccionado = EditorGUILayout.Popup(scriptSeleccionado, nombres);
+
+			if (GUILayout.Button("Crear"))
+			{
+				Crear();
+			}
+		}
+		#endregion
+
+		#region Metodos
+		/// <summary>
+		/// <para>Crear ScriptableObject.</para>
+		/// </summary>
+		private void Crear()// Crear ScriptableObject
+		{
+			ScriptableObject asset = ScriptableObject.CreateInstance(tipos[scriptSeleccionado]);
+
+			ProjectWindowUtil.StartNameEditingIfProjectWindowExists(asset.GetInstanceID(),ScriptableObject.CreateInstance<EndNameEdit>(),string.Format("{0}.asset", nombres[scriptSeleccionado]),AssetPreview.GetMiniThumbnail(asset), null);
+
+			Close();
 		}
 		#endregion
 	}
