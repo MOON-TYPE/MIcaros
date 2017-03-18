@@ -13,6 +13,7 @@ MIkaros es una herramienta para facilitar la construccion de elementos **Scripta
 ## Requisitos
 
 > Es necesario tener [Unity3D][1]. **MIcaros** se ha desarrollado en la version 5.5.2p2, se estima que funcionara en versiones de 4.0+ pero no se ha probado aun.
+
 > Tener en tu proyecto alguna clase que sea scriptable, para poder abrir MIcaros.
 
 ## Caracteristicas
