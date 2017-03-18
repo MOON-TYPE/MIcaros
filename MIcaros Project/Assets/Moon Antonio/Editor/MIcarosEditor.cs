@@ -16,7 +16,7 @@ using System.Reflection;
 using System.Linq;
 #endregion
 
-namespace MoonPincho
+namespace MoonPincho.MIcaros
 {
 	#region ICaros Core
 	/// <summary>
@@ -109,9 +109,11 @@ namespace MoonPincho
 		/// <param name="scriptableObjects">El tipo scriptableobject</param>
 		public static void Init(Type[] scriptableObjects)// Inicializa el sistema MIcaros
 		{
+			Texture icono = AssetDatabase.LoadAssetAtPath<Texture>("Assets/Moon Antonio/Icon/MIcaros.png");
 			Types = scriptableObjects;
-
-			ScriptableObjectGUI window = EditorWindow.GetWindow<ScriptableObjectGUI>(true, "MIcaros", true);
+			GUIContent tituloContenido = new GUIContent(" MIcaros", icono);
+			ScriptableObjectGUI window = EditorWindow.GetWindow<ScriptableObjectGUI>();
+			window.titleContent = tituloContenido;
 			window.ShowPopup();
 		}
 		#endregion
@@ -122,12 +124,25 @@ namespace MoonPincho
 		/// </summary>
 		public void OnGUI()// Interfaz de MIcaros
 		{
-			GUILayout.Label("Elegit Clase ->");
+			GUILayout.Label("Elegir Clase ->");
+
+			GUI.backgroundColor = Color.cyan;
 			scriptSeleccionado = EditorGUILayout.Popup(scriptSeleccionado, nombres);
 
+			GUI.backgroundColor = Color.green;
 			if (GUILayout.Button("Crear"))
 			{
 				Crear();
+			}
+
+			EditorGUILayout.Space();
+			EditorGUILayout.Space();
+			EditorGUILayout.Space();
+
+			GUI.backgroundColor = Color.white;
+			if (GUILayout.Button("┌∩┐(◣_◢)┌∩┐ -> V.1.0.0 <- ┌∩┐(◣_◢)┌∩┐"))
+			{
+				Application.OpenURL("https://github.com/MOON-TYPE/MIcaros/issues");
 			}
 		}
 		#endregion
