@@ -6,7 +6,7 @@
 # MIcaros
 ---
 
-<center>![001][1]<\center>
+<p align="center"><img src="https://github.com/MOON-TYPE/MIcaros/blob/master/res/MIcaros.png?raw=true"></p>
 
 MIkaros es una herramienta para facilitar la construccion de elementos **ScriptableObjects** en el motor grafico Unity3D.
 
