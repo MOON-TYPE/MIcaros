@@ -10,14 +10,16 @@
 #region Librerias
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.ProjectWindowCallback;
 using System.Reflection;
 using System.Linq;
 #endregion
 
 namespace MoonPincho
 {
+	#region ICaros Core
 	/// <summary>
-	/// <para>Tool para crear scriptableobjects rapidamente</para>
+	/// <para>Core de la herramienta para crear scriptableobjects rapidamente.</para>
 	/// </summary>
 	public class MIcarosEditor : MonoBehaviour 
 	{
@@ -57,4 +59,21 @@ namespace MoonPincho
 		}
 		#endregion
 	}
+	#endregion
+
+	#region API Externa
+	/// <summary>
+	/// <para>Miembros abstractos</para>
+	/// </summary>
+	internal class EndNameEdit : EndNameEditAction
+	{
+		#region Miembros abstractos implementados de EndNameEditAction
+		public override void Action(int id, string path, string file)
+		{
+			AssetDatabase.CreateAsset(EditorUtility.InstanceIDToObject(id), AssetDatabase.GenerateUniqueAssetPath(path));
+		}
+
+		#endregion
+	}
+	#endregion
 }
