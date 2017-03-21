@@ -1,10 +1,10 @@
 ﻿//                                  ┌∩┐(◣_◢)┌∩┐
 //																				\\
 // MIcarosEditor.cs (18/03/2017)												\\
-// Autor: Antonio Mateo (Moon Pincho) 									        \\
+// Autor: Antonio Mateo (Moon Antonio) 									        \\
 // Descripcion:		Tool para crear scriptableobjects rapidamente				\\
-// Fecha Mod:		18/03/2017													\\
-// Ultima Mod:		Version Inicial												\\
+// Fecha Mod:		21/03/2017													\\
+// Ultima Mod:		Cambio de namespace											\\
 //******************************************************************************\\
 
 #region Librerias
@@ -16,7 +16,7 @@ using System.Reflection;
 using System.Linq;
 #endregion
 
-namespace MoonPincho.MIcaros
+namespace MoonAntonio.MIcaros
 {
 	#region ICaros Core
 	/// <summary>
@@ -109,7 +109,7 @@ namespace MoonPincho.MIcaros
 		/// <param name="scriptableObjects">El tipo scriptableobject</param>
 		public static void Init(Type[] scriptableObjects)// Inicializa el sistema MIcaros
 		{
-			Texture icono = AssetDatabase.LoadAssetAtPath<Texture>("Assets/Moon Antonio/Icon/MIcaros.png");
+			Texture icono = AssetDatabase.LoadAssetAtPath<Texture>("Assets/Moon Antonio/MIcaros/Icon/MIcaros.png");
 			Types = scriptableObjects;
 			GUIContent tituloContenido = new GUIContent(" MIcaros", icono);
 			ScriptableObjectGUI window = EditorWindow.GetWindow<ScriptableObjectGUI>();
